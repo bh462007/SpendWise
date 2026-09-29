@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+spendwise.db
+../spendwise.db

@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    font-family: "Avenir Next", "Segoe UI", sans-serif;
+    color: #14213d;
+    background: #fffaf3;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+  }
+}
+
+@layer components {
+  .form-input {
+    @apply mt-2 block w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 font-normal text-ink outline-none transition placeholder:text-slate-400 focus:border-coral focus:bg-white focus:ring-4 focus:ring-coral/10;
+  }
+
+  .primary-button {
+    @apply w-full rounded-xl bg-ink px-5 py-3.5 font-semibold text-white transition hover:bg-coral disabled:cursor-not-allowed disabled:opacity-60;
+  }
+}
+
+@media print {
+  body {
+    background: white;
+  }
+
+  .print-hidden {
+    display: none !important;
+  }
+
+  .shadow-soft {
+    box-shadow: none !important;
+  }
+}
+
+.dark body,
+.dark .bg-cream {
+  background-color: #0f172a;
+}
+
+.dark .bg-white {
+  background-color: #182235;
+}
+
+.dark .bg-slate-50,
+.dark .bg-slate-100 {
+  background-color: #243147;
+}
+
+.dark .text-ink,
+.dark .text-slate-700,
+.dark .text-slate-600 {
+  color: #f8fafc;
+}
+
+.dark .text-slate-500,
+.dark .text-slate-400 {
+  color: #a8b4c7;
+}
+
+.dark .border-slate-100,
+.dark .border-slate-200 {
+  border-color: #334155;
+}
+
+.dark .form-input {
+  border-color: #3b4b63;
+  background-color: #1e293b;
+  color: #f8fafc;
+}
+
+.dark .form-input:focus {
+  background-color: #243147;
+}
+
+.dark .hover\:bg-white:hover {
+  background-color: #243147;
+}
+
+.dark .shadow-soft {
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+}
