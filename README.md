@@ -1,42 +1,99 @@
 # SpendWise
 
-SpendWise is a full-stack personal finance tracker that helps users manage expenses, income, monthly budgets, transaction history, and financial reports.
+**SpendWise** is a full-stack personal finance and budget tracker built with **FastAPI, React, and SQLite**.
+
+It lets users manage expenses and income, set monthly budgets, analyze spending patterns, generate reports, and export transaction data — with authentication and strict user-level data isolation.
+
+## Screenshots
+
+### Dashboard
+
+![SpendWise Dashboard](screenshots/dashboard.png)
+
+### Expenses
+
+![SpendWise Expenses](screenshots/expenses.png)
+
+### Reports
+
+![SpendWise Reports](screenshots/reports.png)
+
+### Settings
+
+![SpendWise Settings](screenshots/settings.png)
 
 ## Features
 
-- JWT authentication and password hashing
-- User profile and password management
-- Expense and income CRUD
-- Monthly budgets
-- Dashboard analytics and Recharts visualizations
-- Backend search, filters, sorting, and pagination
-- Date-range reports
-- Category and monthly analysis
-- CSV export and browser print reports
-- Light/dark theme preference
-- Responsive React interface
-- User data isolation
-- Loading, empty, error, and toast feedback states
+* JWT authentication with password hashing
+* Profile and password management
+* Expense and income management
+* Monthly budget tracking
+* Dashboard with spending analytics
+* Category and monthly charts
+* Backend-powered search, filtering, sorting, and pagination
+* Custom date-range reports
+* CSV transaction export
+* Browser-friendly printable reports
+* Light/dark theme
+* Responsive React interface
+* User data isolation
+* Loading, empty, error, and toast states
+* Automated backend tests
 
 ## Tech Stack
 
 ### Backend
 
-- Python 3.12+
-- FastAPI
-- SQLAlchemy
-- SQLite
-- Pydantic
-- pytest
+* Python 3.12+
+* FastAPI
+* SQLAlchemy
+* SQLite
+* Pydantic
+* JWT authentication
+* Passlib / bcrypt
+* pytest
 
 ### Frontend
 
-- React
-- Vite
-- JavaScript
-- Tailwind CSS
-- React Router
-- Recharts
+* React
+* Vite
+* JavaScript
+* Tailwind CSS
+* React Router
+* Recharts
+
+## Architecture
+
+SpendWise follows a simple frontend-backend architecture:
+
+```text
+React + Vite
+     │
+     │ HTTP / JSON
+     ▼
+FastAPI
+     │
+     ├── Authentication
+     ├── Expenses
+     ├── Income
+     ├── Budgets
+     ├── Dashboard
+     ├── Reports
+     └── User Settings
+     │
+     ▼
+SQLAlchemy
+     │
+     ▼
+SQLite
+```
+
+The backend keeps user-specific data isolated by associating expenses, income, and budgets with the authenticated user's ID.
+
+More details are available in:
+
+* `docs/architecture.md`
+* `docs/interview-notes.md`
 
 ## Project Structure
 
@@ -66,6 +123,7 @@ SpendWise/
 │       ├── test_income.py
 │       ├── test_reports.py
 │       └── test_security.py
+│
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
@@ -76,31 +134,58 @@ SpendWise/
 │   ├── package.json
 │   ├── .env.example
 │   └── vite.config.js
+│
 ├── docs/
 │   ├── architecture.md
 │   └── interview-notes.md
+│
+├── screenshots/
+│   ├── dashboard.png
+│   ├── expenses.png
+│   ├── reports.png
+│   └── settings.png
+│
 ├── .gitignore
 └── README.md
 ```
 
-## Setup
+## Getting Started
 
-Clone the repository using its actual repository URL:
+### 1. Clone the repository
 
 ```powershell
-git clone <repository-url>
+git clone https://github.com/bh462007/SpendWise.git
 cd SpendWise
 ```
 
-Create and activate the backend environment:
+### 2. Create the Python environment
 
 ```powershell
 python -m venv .venv
 .venv\Scripts\Activate.ps1
+```
+
+### 3. Install backend dependencies
+
+```powershell
 python -m pip install -r backend\requirements.txt
 ```
 
-Copy `backend/.env.example` to `backend/.env` and set local values:
+### 4. Configure the backend
+
+Copy:
+
+```text
+backend/.env.example
+```
+
+to:
+
+```text
+backend/.env
+```
+
+Then set your local values:
 
 ```text
 DATABASE_URL=sqlite:///./spendwise.db
@@ -108,36 +193,68 @@ SECRET_KEY=use-a-local-secret
 ALGORITHM=HS256
 ```
 
-Start FastAPI from the project root:
+### 5. Start FastAPI
+
+Run this from the **SpendWise project root**:
 
 ```powershell
 uvicorn backend.main:app --reload
 ```
 
-In a second PowerShell window, configure and start React:
+Backend:
+
+```text
+http://127.0.0.1:8000
+```
+
+API documentation:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+### 6. Install frontend dependencies
+
+Open another terminal:
 
 ```powershell
 cd frontend
 npm install
 ```
 
-Copy `frontend/.env.example` to `frontend/.env` if needed:
+Copy:
+
+```text
+frontend/.env.example
+```
+
+to:
+
+```text
+frontend/.env
+```
+
+Then set:
 
 ```text
 VITE_API_URL=http://127.0.0.1:8000
 ```
 
-Start Vite:
+### 7. Start React
 
 ```powershell
 npm run dev
 ```
 
-Open the application at `http://127.0.0.1:5173`.
+Open:
+
+```text
+http://localhost:5173
+```
 
 ## API Overview
 
-Authentication:
+### Authentication
 
 ```text
 POST /auth/register
@@ -145,7 +262,7 @@ POST /auth/login
 GET  /auth/me
 ```
 
-Profile and settings:
+### Profile & Settings
 
 ```text
 GET    /users/me
@@ -154,18 +271,43 @@ PUT    /users/me/password
 DELETE /users/me
 ```
 
-Transactions and budgets:
+### Expenses
 
 ```text
-POST/GET/PUT/DELETE /expenses
-POST/GET/PUT/DELETE /income
-GET/POST/PUT         /budgets
+POST   /expenses
+GET    /expenses
+GET    /expenses/{expense_id}
+PUT    /expenses/{expense_id}
+DELETE /expenses/{expense_id}
 ```
 
-Dashboard and reports:
+### Income
+
+```text
+POST   /income
+GET    /income
+GET    /income/{income_id}
+PUT    /income/{income_id}
+DELETE /income/{income_id}
+```
+
+### Budgets
+
+```text
+GET  /budgets
+POST /budgets
+PUT  /budgets/{budget_id}
+```
+
+### Dashboard
 
 ```text
 GET /dashboard/summary
+```
+
+### Reports
+
+```text
 GET /reports/summary
 GET /reports/categories
 GET /reports/monthly
@@ -173,54 +315,64 @@ GET /reports/budget
 GET /reports/export/csv
 ```
 
-Expense and income list endpoints support backend search, filtering, sorting, and pagination. Example:
+Expense and income list endpoints support backend search, filtering, sorting, and pagination.
+
+Example:
 
 ```text
 GET /expenses?category=Food&page=1&limit=10
 ```
 
-## Screenshots
-
-The following paths are reserved for real screenshots. They are not generated or faked by the application:
-
-```text
-screenshots/dashboard.png
-screenshots/expenses.png
-screenshots/reports.png
-screenshots/settings.png
-```
-
 ## Testing
 
-Run the isolated backend test suite:
+Run the backend test suite from the project root:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest backend\tests -q
+python -m pytest
 ```
 
-The tests use an in-memory SQLite database and do not modify `spendwise.db`.
+The test suite covers:
 
-Build the frontend:
+* Authentication
+* Expense CRUD
+* Income CRUD
+* Budget handling
+* Reports
+* Filtering and pagination
+* Security and user isolation
+
+The tests use an isolated in-memory SQLite database and do not modify the application's `spendwise.db`.
+
+### Frontend production build
 
 ```powershell
 cd frontend
 npm run build
 ```
 
-There is currently no `lint` script in `frontend/package.json`.
+## Security
 
-## Security Notes
-
-- Passwords are hashed with bcrypt through Passlib.
-- JWT settings come from `backend/.env`.
-- `.env`, databases, virtual environments, `node_modules`, build output, and pytest caches are ignored.
-- Protected database queries filter by the authenticated user's ID.
-- Account deletion requires password confirmation.
+* Passwords are hashed with bcrypt through Passlib and are never stored directly.
+* JWT authentication protects private endpoints.
+* JWT configuration is stored in environment variables.
+* User-owned records are queried using the authenticated user's ID.
+* Account deletion requires password confirmation.
+* `.env` files and local databases are excluded from Git.
+* Production secrets are not included in the repository.
 
 ## Future Improvements
 
-- PostgreSQL for production deployments
-- Refresh tokens
-- Automated recurring transactions
-- Database migrations
-- Deployment automation
+* PostgreSQL for production deployments
+* Database migrations
+* Refresh tokens
+* Recurring transactions
+* Automated deployment
+* Production monitoring
+
+## Author
+
+**Bhagyashree Pal**
+
+Computer Engineering Student
+
+GitHub: [@bh462007](https://github.com/bh462007)
